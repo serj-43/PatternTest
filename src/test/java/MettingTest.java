@@ -8,7 +8,6 @@ import utils.MeetingData;
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static utils.MeetingData.generateDate;
 
 import java.time.Duration;
 
@@ -25,8 +24,8 @@ public class MettingTest {
 
     @Test
     void shouldPlanMeeting() {
-        MeetingData person = MeetGenerator.MeetInfo.Person("ru");
-        String planDate = generateDate(3);
+        MeetingData person = MeetGenerator.MeetInfo.newPerson("ru");
+        String planDate = MeetGenerator.generateDate(3);
         $x("//*[@data-test-id='city']//input").setValue(person.getCity());
         $x("//*[@data-test-id='date']//input").setValue(planDate);
         $x("//*[@data-test-id='name']//input").setValue(person.getName());
@@ -39,8 +38,8 @@ public class MettingTest {
 
     @Test
     void shouldRePlanMeeting() {
-        MeetingData person = MeetGenerator.MeetInfo.Person("ru");
-        String planDate = generateDate(3);
+        MeetingData person = MeetGenerator.MeetInfo.newPerson("ru");
+        String planDate = MeetGenerator.generateDate(3);
         $x("//*[@data-test-id='city']//input").setValue(person.getCity());
         $x("//*[@data-test-id='date']//input").setValue(planDate);
         $x("//*[@data-test-id='name']//input").setValue(person.getName());
@@ -49,7 +48,7 @@ public class MettingTest {
         $x("//button//*[text()='Запланировать']").click();
         $x("//*[@data-test-id='success-notification']//*[@class='notification__title'][text()='Успешно!']").should(visible, Duration.ofSeconds(20));
         $x("//*[@data-test-id='success-notification']//*[@class='notification__content']").shouldHave(exactText("Встреча успешно запланирована на " + planDate));
-        planDate = generateDate(5);
+        planDate = MeetGenerator.generateDate(5);
         $x("//*[@data-test-id='date']//input").sendKeys(Keys.CONTROL + "A" + Keys.BACK_SPACE);
         $x("//*[@data-test-id='date']//input").setValue(planDate);
         $x("//button//*[text()='Запланировать']").click();
